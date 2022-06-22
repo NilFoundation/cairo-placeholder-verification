@@ -1,0 +1,68 @@
+\begin{thebibliography}{1}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{(#1)}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
+
+\bibitem{cryptoeprint:2019:1400}
+\selectlanguageifdefined{english}
+Kattis~A., Panarin~K., Vlasov~A. RedShift: Transparent SNARKs from List
+  Polynomial Commitment IOPs.
+\newblock Cryptology ePrint Archive, Report 2019/1400.
+\newblock 2019.
+\newblock \url{https://ia.cr/2019/1400}.
+
+\bibitem{cryptoeprint:2019:953}
+\selectlanguageifdefined{english}
+Gabizon~A., Williamson~Z.~J., Ciobotaru~O. PLONK: Permutations over
+  Lagrange-bases for Oecumenical Noninteractive arguments of Knowledge.
+\newblock Cryptology ePrint Archive, Report 2019/953.
+\newblock 2019.
+\newblock \url{https://ia.cr/2019/953}.
+
+\bibitem{ben2018fast}
+\selectlanguageifdefined{english}
+Fast Reed-Solomon interactive oracle proofs of proximity~/ E.~Ben-Sasson,
+  I.~Bentov, Y.~Horesh et~al.~// 45th international colloquium on automata,
+  languages, and programming (icalp 2018)~/ Schloss Dagstuhl-Leibniz-Zentrum
+  fuer Informatik.
+\newblock 2018.
+
+\bibitem{turbo}
+\selectlanguageifdefined{english}
+Gabizon~A., Williamson~Z.~J. Proposal: The Turbo-PLONK program syntax for
+  specifying SNARK programs.
+\newblock
+  \url{https://docs.zkproof.org/pages/standards/accepted-workshop3/proposal-turbo_plonk.pdf}.
+
+\bibitem{cryptoeprint:2020:315}
+\selectlanguageifdefined{english}
+Gabizon~A., Williamson~Z.~J. plookup: A simplified polynomial protocol for
+  lookup tables.
+\newblock Cryptology ePrint Archive, Report 2020/315.
+\newblock 2020.
+\newblock \url{https://ia.cr/2020/315}.
+
+\bibitem{plonkhalo2}
+\selectlanguageifdefined{english}
+PLONKish Arithmetization - The halo2 book.
+\newblock \url{https://zcash.github.io/halo2/concepts/arithmetization.html}.
+
+\bibitem{lookuphalo2}
+\selectlanguageifdefined{english}
+Lookup argument - The halo2 book.
+\newblock
+  \url{https://zcash.github.io/halo2/design/proving-system/lookup.html}.
+
+\bibitem{cryptoeprint:2019:1076}
+\selectlanguageifdefined{english}
+Chiesa~A., Ojha~D., Spooner~N. Fractal: Post-Quantum and Transparent Recursive
+  Proofs from Holography.
+\newblock Cryptology ePrint Archive, Report 2019/1076.
+\newblock 2019.
+\newblock \url{https://ia.cr/2019/1076}.
+
+\end{thebibliography}

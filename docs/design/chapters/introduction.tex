@@ -1,0 +1,25 @@
+\chapter{Introduction}
+
+This document is a technical reference to the Solana's state proof verification
+with Cairo project.
+
+\section{Overview}
+
+The project's purpose is to provide StarkNet users with reliable Solana's cluster 
+state and necessary transactions proof source.
+
+The project UX consists of several steps:
+\begin{enumerate}
+    \item Retrieve Solana's state proof from \texttt{=nil;}.
+    \item Generate a STARK proof for it.
+    \item Verify the proof with in-StarkNet Cairo-based verifier.
+\end{enumerate}
+
+Such a UX defines projects parts:
+\begin{enumerate}
+    \item Solana's state proof retriever.
+    \item Auxiliary STARK proof generator.
+    \item Cairo-based Placeholder Verifier.
+\end{enumerate}
+
+Each of these parts will be considered independently.

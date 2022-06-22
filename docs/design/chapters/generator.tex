@@ -1,0 +1,63 @@
+\chapter{State Proof Generator}
+\label{section:system}
+
+The basic idea is to wrap the original proofs provided by DBMS replication 
+protocol trustless I/O extension-based cluster to the StarkNet-compatible one. 
+
+Using these proofs, StarkNet/StarkEx (and Cairo in general) users will become 
+capable to rely on third-party clustered databases data in a trustless manner by 
+receiving \texttt{=nil;} DBMS query data, and a STARK proof, proving its structure 
+and contents. This would provide StarkNet/StarkEx users/developers with bridging
+capabilities with any protocol \texttt{=nil;} DBMS supports (e.g. Bitcoin, Solana, others).
+
+Remind that there are two types of proofs in \texttt{=nil;} DBMS Cluster:
+\begin{itemize}
+    \item State Proofs provide compressed state updates from the tracked clusters.
+            The circuits of these proofs are fixed and known in advance.
+    \item Query Proofs show that some data is contained in the compressed state.
+            The query proofs' details are not known in advance.
+            However, they can be represented by relatively simple circuits that can be 
+            generated in runtime.
+\end{itemize}
+
+Some additional setup is required 
+to integrade a tracked cluster into StarkNet via \texttt{=nil;} DBMS Cluster
+\begin{enumerate}
+    \item Prepare Placeholder verification circuit for state proofs in PLONK-arithmetization.
+    \item Translate this circuit into AIR StarkNet-compatible representation. 
+\end{enumerate}
+
+The wrapping mechanism slightly change intercluster transcation \textbf{Read} operation\footnote{
+    For details on intercluster transaction process, see 
+    \url{https://dbms.nil.foundation/io.pdf}}.
+
+\begin{algorithm}[h]
+\caption{Specialized Read Operation}
+\textbf{Input}: $\texttt{from}, \texttt{query}, \texttt{need\_proof}$
+\begin{enumerate}
+	\item Generate circuit $C$ from $\texttt{query}$.
+	\item Query data $\texttt{response}$ required by $\texttt{query}$ from database $\texttt{from}$.
+	\item If $\texttt{need\_proof} = 1$ (otherwise $\pi_{\texttt{state}} = \pi_{\texttt{resp}} = 0$):
+	\begin{enumerate}
+		\item If there is not anchor for the state, 
+            generate Placeholder proof $\pi'_{\texttt{state}}$ of the consistent state $\texttt{state}$ of $\texttt{from}$
+		\item Generate STARK proof $\pi_{\texttt{resp}}$ of $C$.
+		\item Generate STARK proof $\pi_{\texttt{state}}$ that verifies $\pi'_{\texttt{state}}$.
+	\end{enumerate}
+	\item Write $(\pi_{\texttt{state}}, \pi_{\texttt{resp}}, \texttt{response})$ to $\mathcal{M}$.
+			Validators of $\mathcal{M}$ can verify $\texttt{response}$ using either $\pi_{\texttt{state}}, \pi_{\texttt{resp}}$ or the tracked state of $\texttt{from}$. 
+\end{enumerate}
+\end{algorithm}
+
+\section{Circuit Conversion}
+
+We can move arithmetic constraints from PLONK into AIR representation straightforwardly. 
+However, STARKs do not provide separate Permutation and Lookup arguments.
+It means that we need to convert copy- and lookup-constraints into 
+basic AIR constraints.  
+\begin{enumerate}
+    \item Split gates into separate constraints.
+    \item Represent each constraint as AIR constraint on the rows with the rows where selector values are equal to 1.
+    \item Represent copy-constraint as AIR constraints with the corresponding shift. 
+    \item Represent lookup-constraints other separate lookup-argument as AIR constraints with the inner lookup table. 
+\end{enumerate}
