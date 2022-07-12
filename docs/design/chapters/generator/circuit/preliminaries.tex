@@ -1,0 +1,238 @@
+\section{Placeholder Verification Algorithm}
+\label{section:preliminaries}
+\textbf{WIP}
+
+\subsection{Pasta Curves}
+
+Let $n_1 = 17$, $n_2 = 16$.
+Pasta curves parameters:
+\begin{itemize}
+    \item $p = 2^{254} + 45560315531419706090280762371685220353$
+    \item $q = 2^{254} + 45560315531506369815346746415080538113$
+    \item Pallas:
+    \begin{center}
+        $\mathbb{G}_1 = \{ (x, y) \in \mathbb{F}_p | y^2 = x^3 + 5 \}$ \\
+        $|\mathbb{G}_1| = q$
+    \end{center}
+    \item Vesta:
+    \begin{center}
+        $\mathbb{G}_2 = \{ (x, y) \in \mathbb{F}_q | y^2 = x^3 + 5 \}$ \\
+        $|\mathbb{G}_2| = p$
+    \end{center}
+\end{itemize}
+
+\subsection{Verification Algorithm}
+
+\paragraph{Notations}
+
+\begin{center}
+\begin{table}[H]
+\begin{tabular}{| l | l |}
+ 	\hline
+	$N_{\texttt{rows}}$ & Number of rows \\
+	\hline
+	$N_{\texttt{witness}}$ & Number of witness columns \\
+	\hline
+	$N_{\texttt{perm}}$ & Number of witness columns that are included in the permutation argument \\
+	\hline
+	$N_{\texttt{sel}}$ & Number of selectors used in the circuit \\
+	\hline
+	$N_{\texttt{lookup}}$ & Number of lookup constraints \\
+    \hline
+    $N_{\textbf{c}}$ & Number of constraints polynomials \\
+    \hline
+    $N_{PI}$ & Number of public input columns \\
+    \hline
+	${w}_i$ & Witness polynomials, $0 \leq i < N_{\texttt{witness}}$  \\
+	\hline
+	$\texttt{c}_j^{(i)}$ & Constraint polynomials, $0 \leq i < N_{\texttt{sel}}$  \\
+	\hline
+	$\texttt{gate}_i$ & Gate polynomials for selector $\textbf{q}_i(X)$ and constraints $\{ \textbf{c}_j^{(i)} \}_{j = 0}^{n'_i - 1}$ \\
+	\hline
+	$PI_i$ & Public input polynomials, $0 \leq i < N_{PI}$  \\
+	\hline
+	$\sigma(\text{col : } i, \text{row : } j) = (\text{col : } i', \text{row : } j')$ & Permutation over the table \\
+	\hline
+	$\textbf{o}$ & Set of all offsets (see Section \ref{section:introduction:arithmetization}) \\
+	\hline
+\end{tabular}
+\end{table}
+\end{center}
+
+\begin{enumerate}
+	\item Parse proof $\pi$ into:
+		\begin{itemize}
+	            \item $\pi_{\texttt{comm}} = \{w_{0, \texttt{comm}}, \dots, w_{N_{\texttt{witness} - 1}, \texttt{comm}},
+	                    V_{P, \texttt{comm}}, T_{0, \texttt{comm}}, ..., T_{N_T - 1, \texttt{comm}},
+	                A_{\texttt{perm}, \texttt{comm}}, S_{\texttt{perm}, \texttt{comm}}, V_{L, \texttt{comm}} \}$
+	            \item  $\pi_{\texttt{eval}}$ is evaluation proofs for $w_(y), w_i(y\omega^d),
+	                V_P(y), V_P(y\omega),$ \\
+	                $T_0(y), \dots, T_{N_T - 1}(y), A_{\texttt{perm}}(y), 
+	                A_{\texttt{perm}}(y\omega^{-1}), S_{\texttt{perm}}(y), V_L(y), V_L(y\omega)$
+	                for all corresponding $d \in \textbf{o}$
+	      \end{itemize}
+	\item $\append{\texttt{circuit\_params}}$
+	\item $\append{w_{i, \texttt{comm}}}$ for $0 \leq i < N_{\texttt{witness}}$
+	\item \label{step:f-i-verifier}Denote witness polynomials included in permutation argument and public input polynomials as 
+    	\begin{center}
+    		$f_0 \coloneqq w_0, f_1 \coloneqq w_1, \dots, f_{N_{\texttt{perm}} + N_{PI} - 1} = PI_{N_{PI} - 1}$
+    	\end{center}
+    \item $F_0(y), F_1(y), F_2(y) = 
+    			\texttt{permutation\_argument\_verification}(\text{transcript}, \texttt{circuit\_params})$
+    \item $F_3(y), F_4(y), F_5(y), F_6(y), F_7(y) = 
+    			\texttt{lookup\_argument\_verification}(\text{transcript}, \texttt{circuit\_params})$
+	\item Constraints-satisfability processing:
+	\begin{enumerate}
+		\item $\theta = \challenge$
+		\item For $i = 0, \dots, N_{\texttt{sel}} - 1$:
+	    \begin{enumerate}
+	    	\item $\texttt{gate}_i(X) = q_{l_i}(X) \cdot (\theta^{k_i - 1 + \nu_i}\texttt{c}_{0_i}(X) + \dots + \theta^{\nu_i}\texttt{c}_{k_i - 1}(X))$. 
+	    \end{enumerate}
+	    \item Calculate:
+		    \begin{center}
+		    	$F_8(y) = \sum\limits_{0 \leq i < N_{\texttt{sel}}} (\texttt{gate}_i(y))$
+		    \end{center}
+	\end{enumerate}
+	\item $\alpha_0, \dots, \alpha_8 = \challenge$
+	\item Evaluation proof check:
+	\begin{enumerate}
+		\item $N_T \coloneqq \texttt{max}(N_{\texttt{perm}} + N_{PI}, \texttt{deg}_{\texttt{gates}} - 1)$, 
+			where $\texttt{deg}_{\texttt{gates}}$ is the highest degree of the degrees of gate polynomials
+		\item Let $T_{0, \texttt{comm}}, ..., T_{N_T - 1, \texttt{comm}}$ be commitments to $T_0(X), ..., T_{N_T - 1}(X)$ 
+		\item $\append{T_{i, \texttt{comm}}}$ for $0 \leq i < N_T$
+		\item $y = \challengefrom{\mathbb{F}/H}$, $y \in \mathbb{F}/H$
+    	\item Run Verify Eval with the committed polynomials and the points from the set $\{y, y\omega^{-1}, y\omega, y\omega^{d}\}$ for all corresponding $d \in \mathbf{o}$ to check values 
+        $w_i(y), w_i(y\omega^d), V_P(y), V_P(y\omega),T_j(y), A_{\texttt{perm}}(y), S_{\texttt{perm}}(y), V_L(y), V_L(y\omega^{-1}), V_L(y\omega)$  \\
+	\end{enumerate}
+	\item Quotient Polynomial Check:
+	\begin{enumerate}
+	    \item Check the identity:
+	        \begin{center}
+	            $\sum\limits_{i = 0}^{10}\alpha_iF_i(y) = Z(y)T(y)$
+	        \end{center}
+	\end{enumerate}
+\end{enumerate}
+
+\begin{algorithm}[H]
+\caption{Permutation Argument Verification}
+\begin{enumerate}
+	\item $\beta_1, \gamma_1 = \challenge$
+    \item $\append{V_{P, \texttt{comm}}}$, 
+    \item Denote :
+	    \begin{center}
+	    	$g_{\texttt{perm}}(y) \coloneqq \prod_{i = 0}^{N_{\texttt{perm}} + N_{PI} - 1} (f_i(y) + \beta \cdot  S_{id_i}(y) + \gamma)$ \\
+	    	$h_{\texttt{perm}}(y) \coloneqq \prod_{i = 0}^{N_{\texttt{perm}} + N_{PI} - 1} (f_i(y) + \beta \cdot  S_{\sigma_i}(y) + \gamma)$
+	    \end{center}
+	\item Calculate:
+	\begin{center}
+		$F_0(y) = L_0(y)(1 - V_P(y))$ \\
+        $F_1(y) = (1 - (q_{\texttt{last}}(y) + q_{\texttt{blind}}(y))) \cdot (
+         					V_P(\omega y) \cdot h_{\texttt{perm}}(y)
+          					- V_P(y) \cdot g_{\texttt{perm}}(y))$ \\
+		$F_2(y) = q_{\texttt{last}}(y) \cdot (V_P(y)^2 - V_P(y))$
+	\end{center}
+\end{enumerate}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{Lookup Argument Verification}
+\begin{enumerate}
+	\item $\theta = \challenge$
+	\item $\append{A_{\texttt{perm}, \texttt{comm}}}$, $\append{S_{\texttt{perm}, \texttt{comm}}}$, $\append{V_{L, \texttt{comm}}}$
+	\item For $i = 0, \dots, N_{\texttt{lookup}} - 1$ :
+		\begin{enumerate}
+			\item $\texttt{lookup\_gate}_i(y) \coloneqq q_{l_i}(y) \cdot (\theta^{k_i - 1 + \nu_i}A_{0_i}(\omega^{d_{0_i}}y) + \dots
+					 + \theta^{\nu_i}A_{k_i - 1}(\omega^{d_{k_i - 1}}y))$
+			\item $\texttt{table\_value}_i(y) \coloneqq q_{l_i}(y) \cdot (\theta^{k_i - 1 + \nu_i}S_{0_i}(y) + \dots 
+					 + \theta^{\nu_i}S_{k_i - 1}(y))$
+		\end{enumerate}
+	\item Construct the input lookup compression and table compression:
+        \begin{center}
+            $A_{\texttt{compr}}(y) \coloneqq \sum_{0 \leq i < N_{\texttt{lookup}}} \texttt{lookup\_gate}_i (y)$ \\
+            $S_{\texttt{compr}}(y) \coloneqq \sum_{0 \leq i < N_{\texttt{lookup}}} \texttt{table\_value}_i (y)$
+        \end{center}
+	\item Denote :
+	    \begin{center}
+	    	$g_L(y) = (A_{\texttt{compr}}(y) + \beta) \cdot (S_{\texttt{compr}}(y) + \gamma)$ \\
+	    	$h_L(y) = (A_{\texttt{perm}}(y) + \beta) \cdot (S_{\texttt{perm}}(y) + \gamma)$
+	    \end{center}
+	\item $\beta_2, \gamma_2 = \challenge$
+	\item Calculate:
+	        \begin{center}
+	            $F_3(y) = L_0(y)(1 - V_L(y))$ \\
+	            $F_4(y) = (1 - (q_{\texttt{last}}(y) + q_{\texttt{blind}}(y))) \cdot (
+	            					V_L(\omega y) \cdot h_L(y)
+	            					- V_L(y) \cdot g_L(y)$ \\
+	            $F_5(y) = q_{\texttt{last}}(y) \cdot (V_L(y)^2 - V_L(y))$ \\
+	            $F_6(y) = L_0(X)(A_{\texttt{perm}}(y) - S_{\texttt{perm}}(y))$ \\
+	            $F_7(y) = (1 - (q_{\texttt{last}}(y) + q_{\texttt{blind}}(y))) \cdot
+	            					(A_{\texttt{perm}}(y) - S_{\texttt{perm}}(y)) \cdot
+	            					(A_{\texttt{perm}}(y) - A_{\texttt{perm}}(\omega^{-1}y))$
+	        \end{center}
+\end{enumerate}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{Verify Eval}
+\textbf{Input}: queries $\xi_0, \dots \xi_{k - 1}$, proof $\mathcal{P}$, \texttt{fri\_params}, \texttt{transcript}
+\begin{enumerate}
+	\item Check Merkle proofs for $\mathcal{P}.p_{z_i}$ for $0 \leq i < k$
+	\item \texttt{MultiEvalVerify}:
+	\begin{enumerate}
+		\item Interpolate polynomial $U(X)$ such that $U(\xi_j) = z_j$ for $0 \leq j < k$
+		\item $V(X) = \prod_{j = 0}^{k - 1}(X - \xi_j)$
+		\item for $i$ from $0$ to $\texttt{fri\_params}.\lambda - 1$:
+		\begin{enumerate}
+			\item Abort if $\texttt{FRI.Verify}(\mathcal{P}.\texttt{fri\_proof}_i, \texttt{transcript}, \texttt{fri\_params}, U(X), V(X))$ returns $0$
+		\end{enumerate}
+	\end{enumerate}
+\end{enumerate}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{FRI.Verify}
+\textbf{Input}: $\text{FRI proof } \pi, \texttt{transcript}, \texttt{fri\_params}, U(X), V(X)$
+\begin{enumerate}
+	\item $x = \challenge$
+	\item $r = \texttt{fri\_params}.r$
+	\item for $i = 0..r - 2$:
+	\begin{enumerate}
+		\item $\alpha = \challengefrom{\mathbb{F}}$,  $\alpha \in \mathbb{F}$
+		\item $x_{\texttt{next}} = q(x)$
+		\item Find all $s_j \in S = \{ s_j \in D_i : \texttt{fri\_params}.q(s_j) =x_{\texttt{next}} \}$, $|S| = \texttt{fri\_params}.m$ \\
+				\textbf{Remark}: For the case $\texttt{fri\_params}.m = 2$, all $s_j$ can be found from the equation $x_{\texttt{next}} - X^2 = 0$.
+				In other words, $s_0 = x$, $s_1 = -x$.
+		\item $\pi.\texttt{round\_proof}_{i}.T.\textbf{verify}(\pi.\texttt{round\_proof}_i.p_j)$ for $0 \leq j < m$
+		\item Get the polynomial values for $0 \leq j < \texttt{fri\_params}.m$:
+		\begin{itemize}
+			\item if $i = 0$:
+					\begin{center}
+						$y_j = \frac{\pi.\texttt{round\_proof}_0.y_j - U(s_j)}{V(s_j)}$
+					\end{center}
+					\textbf{Remark}: $\pi.\texttt{round\_proof}_0.y_j$ are values of the original polynomial, not $Q(X)$.
+					For this reason, we need to recompute them. 
+			\item Otherwise:
+						\begin{center}
+							$y_j = \pi.\texttt{round\_proof}_i.y_j$
+						\end{center}
+		\end{itemize}
+		\item if $i < r - 2$:
+			\begin{enumerate}
+				\item $\append{\pi.\texttt{round\_proof}_{i + 1}.T}$
+			\end{enumerate}
+		\item Colinearity check:
+		\begin{enumerate}
+			\item Interpolate $\texttt{interpolant}(X)$ from $(s_j, y_j)$
+			\item $\pi.\texttt{round\_proof}_{i + 1}.T.\textbf{verify}(\pi.\texttt{round\_proof}_{i}.\texttt{colinear\_path})$
+			\item Check that $\texttt{interpolant}(\alpha) = \pi.\texttt{round\_proof}_{i}.\texttt{colinear\_value}$
+		\end{enumerate}
+		\item $x = x_{\texttt{next}}$
+	\end{enumerate}
+	\item for the last round $r - 1$:
+	\begin{enumerate} 
+		\item Check that $\pi.\texttt{final\_polynomial}$ contains $2^{\log d' - r}$ elements
+		\item $f(X) \coloneqq \sum_{i = 0}^{2^{\log d' - r}}\pi.\texttt{final\_polynomial}.c_i \cdot X^i$
+		\item Check that $f(x) = \pi.\texttt{round\_proof}_{r - 2}.\texttt{colinear\_value}$
+	\end{enumerate}
+\end{enumerate}
+\end{algorithm}

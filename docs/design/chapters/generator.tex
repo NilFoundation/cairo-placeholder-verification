@@ -49,15 +49,4 @@ The wrapping mechanism slightly change intercluster transcation \textbf{Read} op
 \end{enumerate}
 \end{algorithm}
 
-\section{Circuit Conversion}
-
-We can move arithmetic constraints from PLONK into AIR representation straightforwardly. 
-However, STARKs do not provide separate Permutation and Lookup arguments.
-It means that we need to convert copy- and lookup-constraints into 
-basic AIR constraints.  
-\begin{enumerate}
-    \item Split gates into separate constraints.
-    \item Represent each constraint as AIR constraint on the rows with the rows where selector values are equal to 1.
-    \item Represent copy-constraint as AIR constraints with the corresponding shift. 
-    \item Represent lookup-constraints other separate lookup-argument as AIR constraints with the inner lookup table. 
-\end{enumerate}
+\input{chapters/generator/circuit/preliminaries}
