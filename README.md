@@ -4,8 +4,8 @@ This repository contains Placeholder proof system (https://crypto3.nil.foundatio
 
 ## Community
 
-Issue reports are preferred to be done with Github Issues in here: https://github.com/nilfoundation/evm-solana-verification/issues.
+Issue reports are preferred to be done with Github Issues in here: https://github.com/nilfoundation/evm-cairo-verification/issues.
 
-Forum-alike discussion topics are better to be done with Discussions section in here: https://github.com/NilFoundation/evm-solana-verification/discussions
+Forum-alike discussion topics are better to be done with Discussions section in here: https://github.com/NilFoundation/evm-cairo-verification/discussions
 
 Usage and development questions a preferred to be asked in a Telegram chat: https://t.me/nilfoundation
