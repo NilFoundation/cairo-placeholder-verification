@@ -1,6 +1,31 @@
+[![Discord](https://img.shields.io/discord/969303013749579846.svg?logo=discord&style=flat-square)](https://discord.gg/KmTAEjbmM3)
+[![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=flat-square&logo=telegram&logoColor=dark)](https://t.me/nilfoundation)
+[![Twitter](https://img.shields.io/twitter/follow/nil_foundation)](https://twitter.com/nil_foundation)
+
+
 # Placeholder Verifier in Cairo
 
-This repository contains Placeholder proof system (https://crypto3.nil.foundation/papers/placeholder.pdf) verification mechanism implemented in Cairo.
+This repository contains the smart contracts for validating zero knowledge proofs 
+generated in placeholder proof system in Cairo for Starknet.
+
+## Dependencies
+
+- [cairo](https://github.com/starkware-libs/cairo) [Installation](https://cairo-book.github.io/ch01-01-installation.html#install) == 1.10 
+- [scarb](https://docs.swmansion.com/scarb/download) [Installation](https://docs.swmansion.com/protostar/docs/cairo-1/installation) >= 0.4.0
+- [protostar](https://docs.swmansion.com/protostar/) >= 0.13.0
+
+
+## Clone
+```
+git clone git@github.com:NilFoundation/cairo-placeholder-verification.git
+cd cairo-placeholder-verification
+```
+
+## Test
+```
+protostar test ./tests
+```
+
 
 ## Community
 
