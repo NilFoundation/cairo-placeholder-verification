@@ -1,2 +1,3 @@
-mod business_logic;
 mod contract;
+mod algebra;
+
