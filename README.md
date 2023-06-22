@@ -21,9 +21,15 @@ git clone git@github.com:NilFoundation/cairo-placeholder-verification.git
 cd cairo-placeholder-verification
 ```
 
+## Build
+```
+protostar build
+```
+
+
 ## Test
 ```
-protostar test ./tests
+protostar test 
 ```
 
 

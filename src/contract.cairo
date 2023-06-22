@@ -1,1 +1,1 @@
-mod hello_starknet;
+mod placeholder_verifer;

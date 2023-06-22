@@ -2,5 +2,5 @@
 protostar-version = "0.13.0"
 
 [contracts]
-hello_starknet = ["src"]
+placeholder_verifier = ["src"]
 
