@@ -8,6 +8,8 @@
 This repository contains the smart contracts for validating zero knowledge proofs 
 generated in placeholder proof system in Cairo for Starknet.
 
+[Built with **`auditless/cairo-template`**](https://github.com/auditless/cairo-template)
+
 ## Dependencies
 
 - [cairo](https://github.com/starkware-libs/cairo) [Installation](https://cairo-book.github.io/ch01-01-installation.html#install) == 1.10 
@@ -35,8 +37,6 @@ scarb run test
 
 ## Community
 
-Issue reports are preferred to be done with Github Issues in here: https://github.com/nilfoundation/cairo-placeholder-verification/issues.
+Issue reports are preferred to be done with Github Issues in [here](https://github.com/nilfoundation/cairo-placeholder-verification/issues).
 
-Forum-alike discussion topics are better to be done with Discussions section in here: https://github.com/NilFoundation/cairo-placeholder-verification/discussions
-
-Usage and development questions a preferred to be asked in a Telegram chat: https://t.me/nilfoundation
+Usage and development questions are preferred to be asked in a [Telegram chat](https://t.me/nilfoundation) or in Discord
