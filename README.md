@@ -29,7 +29,7 @@ protostar build
 
 ## Test
 ```
-protostar test 
+scarb run test
 ```
 
 

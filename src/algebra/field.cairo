@@ -1,8 +1,8 @@
 
 //TODO implement
-fn invmod( a: u256, p:u256) -> u256 {
-    0
-}
+// fn invmod( a: u256, p:u256) -> u256 {
+//     0
+// }
 
 fn addmod(a:u256 ,b: u256 , modulus :u256) -> u256{
     0
