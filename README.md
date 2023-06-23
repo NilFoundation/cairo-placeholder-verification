@@ -23,7 +23,7 @@ cd cairo-placeholder-verification
 
 ## Build
 ```
-protostar build
+scarb build
 ```
 
 

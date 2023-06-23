@@ -141,6 +141,12 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+
+#######
+Scarb
+#######
+
+target
 ### Solidity ###
 # Logs
 
