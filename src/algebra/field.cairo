@@ -1,15 +1,21 @@
+use core::traits::Into;
 
 //TODO implement
 // fn invmod( a: u256, p:u256) -> u256 {
 //     0
 // }
+
+
 use debug::PrintTrait;
 use integer::{
-    BoundedInt, u128_wrapping_sub, u16_sqrt, u32_sqrt, u64_sqrt, u8_sqrt, u512, u256_wide_mul,
+    BoundedInt, u512, u256_wide_mul,
     u256_as_non_zero, u512_safe_div_rem_by_u256, u128_as_non_zero
 };
 
 fn addmod(a:u256 ,b: u256 , modulus :u256) -> u256{
+    // let a: u512 = u512{limb0:0 , limb1 :0 , limb2 :a.high , limb3 : a.low};
+    // let b: u512 = u512{limb0:0 , limb1 :0 , limb2 :b.high , limb3 : b.low};
+    // let c: u512 = a + b;
     0
 }
 
@@ -17,6 +23,7 @@ fn fsub(a:u256 ,b: u256 , modulus :u256) -> u256{
     0
 }
 
+//TODO : Add error checks/handling
 fn fmul(a:u256 ,b: u256 , modulus :u256) -> u256{
     let non_z_m =  integer::u256_as_non_zero(modulus);
     let mul  = u256_wide_mul(a,b);
@@ -31,9 +38,6 @@ fn fdiv(a:u256 ,b: u256 , modulus :u256) -> u256{
     0
 }
 
-fn log2(x:u256)-> u256{
-    0
-}
 
 fn expmod_static(base:u256 ,expoent: u256 , modulus :u256) -> u256{
     0

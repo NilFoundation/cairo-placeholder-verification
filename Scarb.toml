@@ -8,5 +8,5 @@ homepage = "https://github.com/NilFoundation/cairo-placeholder-verification"
 test = "protostar test"
 # Add your own custom commands and run them with `scarb run <command>`
 
-[dependencies]
-alexandria_math = { git = "https://github.com/keep-starknet-strange/alexandria.git" }
+# [dependencies]
+# alexandria_math = { git = "https://github.com/keep-starknet-strange/alexandria.git" }
